@@ -1,0 +1,19 @@
+from rest_framework import serializers
+from .models import Tag, Task
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ("id", "name")
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
+    # tagのnameも取得したいので以下を記述
+    tag_name = serializers.ReadOnlyField(source='tag_name', read_only=True)
+
+    class Meta:
+        model = Task
+        fields = ('id', 'title', 'created_at', 'updated_at', 'tag_name')
